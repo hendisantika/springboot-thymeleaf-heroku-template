@@ -217,12 +217,102 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
+            <!-- Liquibase plugin -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>
+                        src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                    </diffChangeLogFile>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost/sample</url>
+                    <defaultSchemaName/>
+                    <username>postgres</username>
+                    <password/>
+                    <referenceUrl>
+                        hibernate:spring:com.chrisbaileydeveloper.myapp.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect
+                    </referenceUrl>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>3.18.2-GA</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase-hibernate4.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${project.parent.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Spring Boot Maven Plugin -->
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <arguments>
+                                <argument>--spring.profiles.active=dev</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build>
+                <plugins>
+                    <!-- Spring Boot Maven Plugin -->
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <arguments>
+                                <argument>--spring.profiles.active=prod</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
