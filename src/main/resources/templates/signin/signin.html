@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title th:text="#{application_name}">Application Demo</title>
+
+    <!-- Main style sheet -->
+    <link href="../../static/css/main.css" media="screen" rel="stylesheet" th:href="@{/css/main.css}"/>
+
+    <!-- Bootstrap 3 -->
+    <link href="../../static/css/bootstrap.min.css" media="screen" rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../static/css/bootstrap-theme.min.css" media="screen" rel="stylesheet"
+          th:href="@{/css/bootstrap-theme.min.css}"/>
+
+</head>
+<body>
+<div class="container">
+    <form class="form-narrow form-horizontal" method="post" th:action="@{/signin}">
+        <fieldset>
+            <legend th:text="#{menu_signin}">Please Sign In</legend>
+            <div class="form-group">
+                <label class="control-label" for="username" th:text="#{label_username}">Username</label> <input
+                    class="form-control" id="username" name="username" placeholder="Username"
+                    th:placeholder="#{label_username}" type="text"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password" th:text="#{label_password}">Password</label> <input
+                    class="form-control" id="password" name="password" placeholder="Password"
+                    th:placeholder="#{label_password}" type="password"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" th:text="#{btn_signin}" type="submit">Sign in</button>
+            </div>
+        </fieldset>
+        <div class="warning" th:if="${param.error}">
+            <p th:text="#{message_login_fail}">Login failed, please try again.</p>
+        </div>
+    </form>
+
+    <p style="text-align:center;">
+        User account = <i>user &amp; user</i> <br/>
+        Admin account = <i>admin &amp; admin</i>
+    </p>
+
+    <div th:replace="fragments/footer :: footer">Footer</div>
+</div>
+</body>
+</html>
