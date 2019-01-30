@@ -30,7 +30,7 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-@EnableJpaRepositories("com.hendisantika.springbootthymeleafherokutemplate.repository")
+@EnableJpaRepositories("com.hendisantika.springbootthymeleafherokutemplate")
 @EnableTransactionManagement
 public class DatabaseConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);

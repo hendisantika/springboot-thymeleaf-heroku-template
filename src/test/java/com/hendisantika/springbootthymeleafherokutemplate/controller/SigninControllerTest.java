@@ -1,16 +1,12 @@
 package com.hendisantika.springbootthymeleafherokutemplate.controller;
 
-import com.hendisantika.springbootthymeleafherokutemplate.SpringbootThymeleafHerokuTemplateApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,11 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Time: 05:23
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = SpringbootThymeleafHerokuTemplateApplication.class)
-@WebAppConfiguration
-@IntegrationTest
-@Transactional
+@RunWith(SpringRunner.class)
+@WebMvcTest(SigninController.class)
 public class SigninControllerTest {
     private MockMvc mockMvc;
 
