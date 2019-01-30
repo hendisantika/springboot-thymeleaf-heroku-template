@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+
+    <!-- Bootstrap 3 -->
+    <link href="../../static/css/bootstrap.min.css" media="screen" rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../static/css/bootstrap-theme.min.css" media="screen" rel="stylesheet"
+          th:href="@{/css/bootstrap-theme.min.css}"/>
+
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-target="#navbarCollapse" data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}" th:text="#{application_name}">Application Demo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#" th:href="@{/}" th:text="#{nav_home}">Home</a></li>
+                <li><a href="#about" th:text="#{nav_about}">About</a></li>
+                <li><a href="#contact" th:text="#{nav_contact}">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="!isAuthenticated()">
+                    <a href="/signin" th:href="@{/signin}" th:text="#{nav_signin}">Sign in</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a href="/logout" onclick="$('#form').submit();" th:href="@{#}" th:text="#{label_logout}">Logout</a>
+                    <form action="#" id="form" method="post" style="visibility: hidden" th:action="@{/logout}"></form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>
