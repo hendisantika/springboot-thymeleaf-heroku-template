@@ -7,7 +7,7 @@
     <property name="now" value="now()" dbms="mysql,h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
-    <changeSet id="00000000000000" author="jhipster" dbms="postgresql">
+    <changeSet id="V1_20200405_initial_schema" author="hendisantika" dbms="postgresql">
         <createSequence sequenceName="hibernate_sequence" startValue="1000" incrementBy="1"/>
     </changeSet>
 
