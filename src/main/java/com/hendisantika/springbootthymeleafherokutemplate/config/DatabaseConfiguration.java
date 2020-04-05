@@ -6,9 +6,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -32,24 +31,17 @@ import java.util.Arrays;
 @Configuration
 @EnableJpaRepositories("com.hendisantika.springbootthymeleafherokutemplate")
 @EnableTransactionManagement
-public class DatabaseConfiguration implements EnvironmentAware {
+public class DatabaseConfiguration {
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
-    private RelaxedPropertyResolver propertyResolver;
-
+    @Autowired
     private Environment env;
-
-    @Override
-    public void setEnvironment(Environment env) {
-        this.env = env;
-        this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
-    }
 
     @Bean
     @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
     public DataSource dataSource() {
         log.debug("Configuring Datasource");
-        if (propertyResolver.getProperty("url") == null && propertyResolver.getProperty("databaseName") == null) {
+        if (env.getProperty("url") == null && env.getProperty("databaseName") == null) {
             log.error("Your database connection pool configuration is incorrect! The application" +
                             "cannot start. Please check your Spring profile, current profiles are: {}",
                     Arrays.toString(env.getActiveProfiles()));
@@ -57,15 +49,15 @@ public class DatabaseConfiguration implements EnvironmentAware {
             throw new ApplicationContextException("Database connection pool is not configured correctly");
         }
         HikariConfig config = new HikariConfig();
-        config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
-        if (propertyResolver.getProperty("url") == null || "".equals(propertyResolver.getProperty("url"))) {
-            config.addDataSourceProperty("databaseName", propertyResolver.getProperty("databaseName"));
-            config.addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
+        config.setDataSourceClassName(env.getProperty("dataSourceClassName"));
+        if (env.getProperty("url") == null || "".equals(env.getProperty("url"))) {
+            config.addDataSourceProperty("databaseName", env.getProperty("databaseName"));
+            config.addDataSourceProperty("serverName", env.getProperty("serverName"));
         } else {
-            config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
+            config.addDataSourceProperty("url", env.getProperty("url"));
         }
-        config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
-        config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
+        config.addDataSourceProperty("user", env.getProperty("username"));
+        config.addDataSourceProperty("password", env.getProperty("password"));
 
         return new HikariDataSource(config);
     }

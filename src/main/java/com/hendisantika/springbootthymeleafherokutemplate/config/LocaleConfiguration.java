@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -25,7 +25,7 @@ import java.util.Locale;
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-public class LocaleConfiguration extends WebMvcConfigurerAdapter {
+public class LocaleConfiguration implements WebMvcConfigurer {
 
     /**
      * Thymeleaf LocaleResolver

@@ -4,9 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -27,25 +26,20 @@ import java.net.URISyntaxException;
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-public class HerokuDatabaseConfiguration implements EnvironmentAware {
+public class HerokuDatabaseConfiguration {
 
     private final Logger log = LoggerFactory
             .getLogger(HerokuDatabaseConfiguration.class);
 
-    private RelaxedPropertyResolver propertyResolver;
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.propertyResolver = new RelaxedPropertyResolver(environment,
-                "spring.datasource.");
-    }
+    @Autowired
+    Environment environment;
 
     @Bean
     @Profile(Constants.SPRING_PROFILE_PRODUCTION)
     public DataSource dataSource() {
         log.debug("Configuring Heroku Datasource");
 
-        String herokuUrl = propertyResolver.getProperty("heroku-url");
+        String herokuUrl = environment.getProperty("heroku-url");
         if (herokuUrl != null) {
             log.info("Using Heroku, parsing their $DATABASE_URL to use it with JDBC");
             URI dbUri = null;
@@ -65,8 +59,7 @@ public class HerokuDatabaseConfiguration implements EnvironmentAware {
                     + "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
 
             HikariConfig config = new HikariConfig();
-            config.setDataSourceClassName(propertyResolver
-                    .getProperty("dataSourceClassName"));
+            config.setDataSourceClassName(environment.getProperty("dataSourceClassName"));
             config.addDataSourceProperty("url", dbUrl);
             config.addDataSourceProperty("user", username);
             config.addDataSourceProperty("password", password);
