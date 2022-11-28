@@ -3,7 +3,7 @@ package com.hendisantika.springbootthymeleafherokutemplate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +22,7 @@ public class SigninController {
     /**
      * Sign in page.
      */
-    @RequestMapping("/signin")
+    @GetMapping("/signin")
     public String signin() {
         logger.info("Showing sign in page");
 

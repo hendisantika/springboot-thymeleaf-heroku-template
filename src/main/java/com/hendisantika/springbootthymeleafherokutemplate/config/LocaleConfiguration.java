@@ -2,14 +2,12 @@ package com.hendisantika.springbootthymeleafherokutemplate.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import uk.co.gcwilliams.jodatime.thymeleaf.JodaTimeDialect;
 
 import java.util.Locale;
@@ -24,8 +22,7 @@ import java.util.Locale;
  * Time: 20:22
  * To change this template use File | Settings | File Templates.
  */
-@Configuration
-public class LocaleConfiguration extends WebMvcConfigurerAdapter {
+public class LocaleConfiguration implements WebMvcConfigurer {
 
     /**
      * Thymeleaf LocaleResolver
@@ -33,7 +30,7 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.CANADA);
+        sessionLocaleResolver.setDefaultLocale(Locale.ENGLISH);
         return sessionLocaleResolver;
     }
 
@@ -65,9 +62,9 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter {
     /**
      * Thymeleaf - Spring Security Integration
      */
-    @Bean
-    public SpringSecurityDialect springSecurityDialect() {
-        return new SpringSecurityDialect();
-    }
+//    @Bean
+//    public SpringSecurityDialect springSecurityDialect() {
+//        return new SpringSecurityDialect();
+//    }
 }
 
